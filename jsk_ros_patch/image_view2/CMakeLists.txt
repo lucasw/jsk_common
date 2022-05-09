@@ -12,7 +12,7 @@ if (CMAKE_VERSION VERSION_LESS 3.4)
 endif()
 
 if(NOT $ENV{ROS_DISTRO} STRLESS noetic)
-  add_compile_options(-std=c++14)
+  add_compile_options(-std=c++17)
 elseif(NOT $ENV{ROS_DISTRO} STRLESS kinetic)
   add_compile_options(-std=c++11)
 endif()

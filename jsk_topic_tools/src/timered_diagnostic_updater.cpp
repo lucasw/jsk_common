@@ -46,7 +46,7 @@ namespace jsk_topic_tools
       timer_duration, boost::bind(
         &TimeredDiagnosticUpdater::timerCallback,
         this,
-        _1));
+       boost::placeholders::_1));
     timer_.stop();
   }
   

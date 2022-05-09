@@ -51,7 +51,7 @@ namespace jsk_topic_tools
     diagnostic_updater_->add(
       getName() + "::Relay",
       boost::bind(
-        &Relay::updateDiagnostic, this, _1));
+        &Relay::updateDiagnostic, this, boost::placeholders::_1));
     double vital_rate;
     pnh_.param("vital_rate", vital_rate, 1.0);
     vital_checker_.reset(

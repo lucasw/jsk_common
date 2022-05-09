@@ -45,7 +45,7 @@ namespace jsk_topic_tools
 
     srv_ = boost::make_shared<dynamic_reconfigure::Server<Config> >(pnh_);
     dynamic_reconfigure::Server<Config>::CallbackType f =
-      boost::bind(&LightweightThrottle::configCallback, this, _1, _2);
+      boost::bind(&LightweightThrottle::configCallback, this, boost::placeholders::_1, boost::placeholders::_2);
     srv_->setCallback(f);
 
     // Subscribe input topic at first in order to decide
@@ -95,7 +95,7 @@ namespace jsk_topic_tools
       // This section should be called once
       sub_->shutdown();         // Shutdown before advertising topic
       ros::SubscriberStatusCallback connect_cb
-        = boost::bind(&LightweightThrottle::connectionCallback, this, _1);
+        = boost::bind(&LightweightThrottle::connectionCallback, this, boost::placeholders::_1);
       ros::AdvertiseOptions opts("output", 1,
                                  msg->getMD5Sum(),
                                  msg->getDataType(),

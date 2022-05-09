@@ -116,7 +116,7 @@ namespace image_view2{
 
     srv_ = boost::make_shared <dynamic_reconfigure::Server<Config> >(local_nh);
     dynamic_reconfigure::Server<Config>::CallbackType f =
-      boost::bind(&ImageView2::config_callback, this, _1, _2);
+      boost::bind(&ImageView2::config_callback, this, boost::placeholders::_1, boost::placeholders::_2);
     srv_->setCallback(f);
   }
 
