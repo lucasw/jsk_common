@@ -143,6 +143,7 @@ def count_frames(video_path, start=0.0, duration=-1,
         video_duration = max(video_duration - duration, 0)
     fps = get_video_fps(video_path)
     if sampling_frequency is not None:
+        print(f"sampling frequency {sampling_frequency}")
         return int(math.ceil(
             video_duration * fps /
             int(math.ceil(fps * sampling_frequency))))
@@ -171,6 +172,7 @@ def video_to_bag(video_filepath, bag_output_filepath,
     video_out = osp.join(tmpdirname, 'video.tmp.bag')
     n_frame = count_frames(video_filepath,
                            sampling_frequency=sampling_frequency)
+    print(f"n_frame {n_frame}")
     if show_progress_bar:
         progress = tqdm(total=n_frame)
     with rosbag.Bag(video_out, 'w') as outbag:
