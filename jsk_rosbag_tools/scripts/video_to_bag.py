@@ -3,6 +3,7 @@
 import argparse
 import os.path as osp
 
+import rospy
 from jsk_rosbag_tools.video import video_to_bag
 
 
@@ -18,11 +19,16 @@ def main():
                         help='Converted topic name.')
     parser.add_argument('--fps', type=float,
                         help='Frame Rate.', default=None)
+    parser.add_argument('--time_offset_sec', type=float,
+                        help='Unix epoch time offset.', default=0)
     parser.add_argument('--compress', action='store_true',
                         help='Compress Image flag.')
     parser.add_argument('--no-progress-bar', action='store_true',
                         help="Don't show progress bar.")
     args = parser.parse_args()
+
+    base_stamp = rospy.Time.from_sec(args.time_offset_sec)
+    print(f"{args.time_offset_sec} -> {base_stamp.to_sec()}")
 
     video_path = args.inputvideo
     if args.out is None:
@@ -42,7 +48,9 @@ def main():
         video_path, outfile,
         args.topic_name,
         compress=args.compress,
-        fps=args.fps,
+        no_audio=False,  # TODO(lucasw) args
+        base_stamp=base_stamp,
+        override_fps=args.fps,
         show_progress_bar=not args.no_progress_bar)
 
 
