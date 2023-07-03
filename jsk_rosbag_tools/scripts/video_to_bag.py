@@ -21,6 +21,10 @@ def main():
                         help='Frame Rate.', default=None)
     parser.add_argument('--time_offset_sec', type=float,
                         help='Unix epoch time offset.', default=0)
+    parser.add_argument('--video_offset_sec', type=float,
+                        help='Video time offset.', default=0)
+    parser.add_argument('--duration', type=float,
+                        help='Output bag duration.', default=0.0)
     parser.add_argument('--compress', action='store_true',
                         help='Compress Image flag.')
     parser.add_argument('--no-progress-bar', action='store_true',
@@ -28,7 +32,7 @@ def main():
     args = parser.parse_args()
 
     base_stamp = rospy.Time.from_sec(args.time_offset_sec)
-    print(f"{args.time_offset_sec} -> {base_stamp.to_sec()}")
+    print(f"time offset sec {args.time_offset_sec} -> base_stamp {base_stamp.to_sec()}")
 
     video_path = args.inputvideo
     if args.out is None:
@@ -44,12 +48,16 @@ def main():
     while osp.exists(outfile):
         outfile = pattern % index
         index += 1
+    print(f"output bag: {outfile} {args.out}")
+
     video_to_bag(
         video_path, outfile,
         args.topic_name,
         compress=args.compress,
-        no_audio=False,  # TODO(lucasw) args
+        no_audio=True,  # TODO(lucasw) args
         base_stamp=base_stamp,
+        video_offset_sec=args.video_offset_sec,
+        duration_sec=args.duration,
         override_fps=args.fps,
         show_progress_bar=not args.no_progress_bar)
 
