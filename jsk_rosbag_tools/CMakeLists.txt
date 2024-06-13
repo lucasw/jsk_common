@@ -3,14 +3,15 @@ project(jsk_rosbag_tools)
 
 find_package(
   catkin REQUIRED
-  catkin_virtualenv
+  # catkin_virtualenv
 )
 
+if(false)
 if (${catkin_virtualenv_VERSION} VERSION_LESS "0.5.1")
   message(STATUS "jsk_rosbag_tools requires catkin_virtualenv >= 0.5.1")
   return()
 endif()
-
+endif()
 
 catkin_python_setup()
 
@@ -18,6 +19,7 @@ catkin_package(
   CATKIN_DEPENDS
 )
 
+if (false)
 if($ENV{ROS_DISTRO} STREQUAL "noetic")
   catkin_generate_virtualenv(
     INPUT_REQUIREMENTS requirements.in
@@ -28,6 +30,7 @@ else()
     INPUT_REQUIREMENTS requirements.in.python2
     PYTHON_INTERPRETER python2
   )
+endif()
 endif()
 
 file(GLOB SCRIPTS_FILES scripts/*)
@@ -65,12 +68,14 @@ if(CATKIN_ENABLE_TESTING)
   catkin_install_python(PROGRAMS ${python_test_scripts}
     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
+  if(false)
   add_rostest(tests/test_jsk_rosbag_tools.test
     DEPENDENCIES ${PROJECT_NAME}_generate_virtualenv download_audio_data download_video_data)
   if("$ENV{ROS_DISTRO}" STRGREATER "indigo")
     # could not install moviepy on indigo.
     add_rostest(tests/test_bag_to_video.test
       DEPENDENCIES ${PROJECT_NAME}_generate_virtualenv download_audio_data download_video_data)
+  endif()
   endif()
 endif()
 
@@ -79,6 +84,8 @@ install(DIRECTORY scripts samples
   USE_SOURCE_PERMISSIONS
 )
 
+if(false)
 install(FILES requirements.txt
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
+endif()
