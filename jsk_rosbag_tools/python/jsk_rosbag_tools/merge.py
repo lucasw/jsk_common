@@ -20,7 +20,7 @@ def get_next(bag_iter, reindex=False,
 
 
 def merge_bag(main_bagfile, bagfile, outfile=None, topics=None,
-              reindex=True):
+              reindex=True, compression='none'):
     # get min and max time in bagfile
     main_limits = get_limits(main_bagfile)
     limits = get_limits(bagfile)
@@ -37,7 +37,7 @@ def merge_bag(main_bagfile, bagfile, outfile=None, topics=None,
     print("topics filter: ", topics)
     print("writing to %s." % outfile)
     # merge bagfile
-    outbag = rosbag.Bag(outfile, 'w')
+    outbag = rosbag.Bag(outfile, 'w', compression=compression)
     main_bag = rosbag.Bag(main_bagfile).__iter__()
     bag = rosbag.Bag(bagfile).__iter__()
     main_next = get_next(main_bag)
@@ -75,7 +75,9 @@ def get_limits(bagfile):
     end_time = None
     start_time = None
 
-    for topic, msg, t in rosbag.Bag(bagfile).read_messages():
+    bag = rosbag.Bag(bagfile)
+    print(f"{bag.get_compression_info()}")
+    for topic, msg, t in bag.read_messages():
         if start_time is None or t < start_time:
             start_time = t
         if end_time is None or t > end_time:

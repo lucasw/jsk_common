@@ -15,6 +15,12 @@ def main():
         type=str,
         help='topics which should be merged to the main bag',
         default=None)
+    parser.add_argument(
+        '--compression', '-c',
+        type=str,
+        help='compression: none, lz4, bz2',
+        default='none')
+
     parser.add_argument('-i', help='reindex bagfile',
                         default=False, action="store_true")
     parser.add_argument(
@@ -32,7 +38,8 @@ def main():
               args.bagfile,
               outfile=args.out,
               topics=args.topics,
-              reindex=args.i)
+              reindex=args.i,
+              compression=args.compression)
 
 
 if __name__ == "__main__":
